@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using FluentMigrator.Runner;
+using Microsoft.Extensions.DependencyInjection;
 using MySqlConnector;
 
 namespace GameAPI.Infrastructure.Migrations
@@ -7,9 +9,11 @@ namespace GameAPI.Infrastructure.Migrations
     //Caso o schema não exista, ele é criado utilizando o Dapper
     public class DatabaseMigration
     {
-        public static void Migrate(string connectionString)
+        public static void Migrate(string connectionString, IServiceProvider service)
         {
             EnsureDatabaseCreated(connectionString);
+
+            MigrationDatabase(service);
         }
 
         private static void EnsureDatabaseCreated(string connectionString)
@@ -31,6 +35,15 @@ namespace GameAPI.Infrastructure.Migrations
             {
                 dbConnection.Execute($"CREATE DATABASE {databaseName}");
             }
+        }
+
+        private static void MigrationDatabase(IServiceProvider serviceProvider)
+        {
+            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+
+            runner.ListMigrations();
+
+            runner.MigrateUp();
         }
     }
 }

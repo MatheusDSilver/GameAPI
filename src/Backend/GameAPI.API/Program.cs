@@ -1,3 +1,4 @@
+using FluentMigrator.Runner;
 using GameAPI.API.Filters;
 using GameAPI.Application;
 using GameAPI.Domain.Repositories;
@@ -6,6 +7,7 @@ using GameAPI.Infrastructure.Extensions;
 using GameAPI.Infrastructure.Migrations;
 using GameAPI.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,8 @@ builder.Services.AddSwaggerGen();
 //Filtro para exceções personalizadas
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
 
+AddFluentMigrator(builder.Services);
+
 var app = builder.Build();
 
 
@@ -46,11 +50,28 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//AddFluentMigrator(builder.Services);
+
 MigrateDatabase();
+
+
 
 app.Run();
 
+
+void AddFluentMigrator(IServiceCollection services)
+{
+    services.AddFluentMigratorCore().ConfigureRunner(options =>
+    {
+        options
+        .AddMySql5()
+        .WithGlobalConnectionString(connectionString)
+        .ScanIn(Assembly.Load("GameAPI.Infrastructure")).For.All();
+    });
+}
+
 void MigrateDatabase()
 {
-    DatabaseMigration.Migrate(connectionString);
+    var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+    DatabaseMigration.Migrate(connectionString, serviceScope.ServiceProvider);
 }

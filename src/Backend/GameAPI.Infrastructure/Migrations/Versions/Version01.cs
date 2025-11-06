@@ -9,8 +9,6 @@ namespace GameAPI.Infrastructure.Migrations.Versions
         {
             const string schema = "gameapi";
 
-            Create.Schema(schema);
-
             Create.Table("players").InSchema(schema)
                 .WithColumn("Id").AsInt32().PrimaryKey().Identity()
                 .WithColumn("Username").AsString(100).NotNullable()
