@@ -3,12 +3,12 @@
 > API interativa, que permite adicionar players e experiência aos mesmos, e também deleta-los caso deseje.
 
 ---
-Esta API foi criada com objetivo de demonstrar experiência com o assunto e boas práticas de desenvolvimento incluindo:
+### Esta API foi criada com objetivo de demonstrar experiência com o assunto e boas práticas de desenvolvimento incluindo:
 
 - **Domain Drive Design (DDD)** 
 - **Arquitetura em camadas** 
 ---
-##Tecnologias utilizadas
+### Tecnologias utilizadas
 
 - **.NET 8**
 - **ASP.NET Core Web API**
