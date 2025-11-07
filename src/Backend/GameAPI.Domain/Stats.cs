@@ -25,8 +25,8 @@
 
             if(newXp >= 100)
             {
-                newLevel++;
-                newXp = newXp - 100;
+                newLevel = newLevel + (newXp / 100);
+                newXp = newXp % 100;
             }
             return new Stats(newLevel, newXp, Health);
         }
