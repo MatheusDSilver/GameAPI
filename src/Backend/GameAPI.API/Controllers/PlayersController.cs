@@ -16,19 +16,13 @@ namespace GameAPI.API.Controllers
         private readonly RemoveUseCase _remove;
         private readonly GetPlayerUseCase _getPlayer;
 
-        private readonly PlayerService _playerService;
-
-        public PlayersController(PlayerService playerService, RegisterPlayerUseCase registerPlayer,
-            RemoveUseCase remove, GetPlayerUseCase getPlayer, GainExperienceUseCase gainExperience)
+        public PlayersController(RegisterPlayerUseCase registerPlayer, RemoveUseCase remove, 
+            GetPlayerUseCase getPlayer, GainExperienceUseCase gainExperience)
         {
-            _playerService = playerService;
-
             _registerPlayer = registerPlayer;
             _remove = remove;
             _getPlayer = getPlayer;
             _gainExperience = gainExperience;
-
-
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]

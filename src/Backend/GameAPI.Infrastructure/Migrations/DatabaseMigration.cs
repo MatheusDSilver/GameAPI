@@ -36,7 +36,7 @@ namespace GameAPI.Infrastructure.Migrations
                 dbConnection.Execute($"CREATE DATABASE {databaseName}");
             }
         }
-
+        //Irá chamar as migrações e com isso criar a tabela caso não exista.
         private static void MigrationDatabase(IServiceProvider serviceProvider)
         {
             var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
