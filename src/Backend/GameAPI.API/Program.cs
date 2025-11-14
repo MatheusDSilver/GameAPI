@@ -18,6 +18,9 @@ builder.Services.AddDbContext<GameApiDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
+
+//builder.Services.AddScoped<RegisterPlayerUseCase>();
+
 builder.Services.AddScoped<PlayerService>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
@@ -31,6 +34,10 @@ builder.Services.AddSwaggerGen();
 
 //Filtro para exceções personalizadas
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
+
+
+//Injeções de dependencia do application
+builder.Services.AddApplication();
 
 AddFluentMigrator(builder.Services);
 

@@ -1,4 +1,8 @@
 ﻿using GameAPI.Application;
+using GameAPI.Application.UseCases.Players.GainExperience;
+using GameAPI.Application.UseCases.Players.Get;
+using GameAPI.Application.UseCases.Players.Register;
+using GameAPI.Application.UseCases.Players.Remove;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameAPI.API.Controllers
@@ -7,11 +11,24 @@ namespace GameAPI.API.Controllers
     [ApiController]
     public class PlayersController : ControllerBase
     {
+        private readonly RegisterPlayerUseCase _registerPlayer;
+        private readonly GainExperienceUseCase _gainExperience;
+        private readonly RemoveUseCase _remove;
+        private readonly GetPlayerUseCase _getPlayer;
+
         private readonly PlayerService _playerService;
 
-        public PlayersController(PlayerService playerService)
+        public PlayersController(PlayerService playerService, RegisterPlayerUseCase registerPlayer,
+            RemoveUseCase remove, GetPlayerUseCase getPlayer, GainExperienceUseCase gainExperience)
         {
             _playerService = playerService;
+
+            _registerPlayer = registerPlayer;
+            _remove = remove;
+            _getPlayer = getPlayer;
+            _gainExperience = gainExperience;
+
+
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -19,7 +36,7 @@ namespace GameAPI.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] string username)
         {
-            var player = await _playerService.CreatePlayerAsync(username);
+            var player = await _registerPlayer.Execute(username);
             return Created(string.Empty, player);
             //return CreatedAtAction(nameof(GetById), new { id = player.Id }, player);
         }
@@ -29,7 +46,7 @@ namespace GameAPI.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var player = await _playerService.GetById(id);
+            var player = await _getPlayer.GetById(id);
             return Ok(player);
         }
 
@@ -38,7 +55,7 @@ namespace GameAPI.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var player = await _playerService.GetAllById();
+            var player = await _getPlayer.GetAllById();
             return Ok(player);
         }
 
@@ -48,14 +65,14 @@ namespace GameAPI.API.Controllers
         [HttpPost("{id}/gain-xp")]
         public async Task<IActionResult> GainExperience(int id, [FromQuery] int xp)
         {
-            var player = await _playerService.AddExperienceAsync(id, xp);
+            var player = await _gainExperience.Execute(id, xp);
             return Ok(player);
         }
 
         [HttpDelete("{id}/remove")]
         public async Task<IActionResult> Remove(int id)
         {
-            var player = await _playerService.RemovePlayer(id);
+            var player = await _remove.Execute(id);
             return Ok(player);
         }
     }
