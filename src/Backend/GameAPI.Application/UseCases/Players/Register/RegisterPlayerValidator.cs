@@ -4,9 +4,11 @@ namespace GameAPI.Application.UseCases.Players.Register
 {
     public class RegisterPlayerValidator
     {
-        public static void Validator(string name)
+        public bool IsValid(string name)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ErrorOnValidationException("Name cannot be empty");
+            if (string.IsNullOrWhiteSpace(name)) return false;
+
+            return true;
         }
     }
 }

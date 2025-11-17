@@ -1,5 +1,7 @@
 ﻿using GameAPI.Domain.Entities;
 using GameAPI.Domain.Repositories;
+using GameAPI.Exceptions.ExceptionsBase;
+using System.Net.Http.Headers;
 
 namespace GameAPI.Application.UseCases.Players.Register
 {
@@ -12,10 +14,19 @@ namespace GameAPI.Application.UseCases.Players.Register
         }
         public async Task<Player> Execute(string name)
         {
-            RegisterPlayerValidator.Validator(name);
+            Validate(name);
+
             var player = new Player(name);
             await _playerRepository.AddPlayerAsync(player);
             return player;
+        }
+
+        private void Validate(string name)
+        {
+            var validator = new RegisterPlayerValidator();
+            var result = validator.IsValid(name);
+
+            if (result == false) throw new ErrorOnValidationException("Name cannot be empty");
         }
     }
 }
