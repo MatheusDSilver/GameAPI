@@ -1,8 +1,8 @@
 ﻿using GameAPI.Application.UseCases.Players.Get;
+using GameAPI.Domain;
 using GameAPI.Domain.Entities;
 using GameAPI.Domain.Repositories;
 using GameAPI.Exceptions.ExceptionsBase;
-using System.Net.Http.Headers;
 
 namespace GameAPI.Application.UseCases.Players.GainExperience
 {
@@ -10,10 +10,13 @@ namespace GameAPI.Application.UseCases.Players.GainExperience
     {
         private readonly IPlayerRepository _playerRepository;
         private readonly IGetPlayerUseCase _getPlayer;
-        public GainExperienceUseCase(IPlayerRepository playerRepository, IGetPlayerUseCase getPlayer)
+        private readonly IUnityOfWork _unityOfWork;
+        public GainExperienceUseCase(IPlayerRepository playerRepository, IGetPlayerUseCase getPlayer,
+            IUnityOfWork unityOfWork)
         {
             _playerRepository = playerRepository;
             _getPlayer = getPlayer;
+            _unityOfWork = unityOfWork;
         }
         public async Task<Player> Execute(int playerId, int xp)
         {
@@ -23,7 +26,9 @@ namespace GameAPI.Application.UseCases.Players.GainExperience
 
             player.GainExperience(xp);
 
-            await _playerRepository.UpdateAsync(player);
+            _playerRepository.UpdateExperience(player);
+
+            await _unityOfWork.Commit();
 
             return player;
         }

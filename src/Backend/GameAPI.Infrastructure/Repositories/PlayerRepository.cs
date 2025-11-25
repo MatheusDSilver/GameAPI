@@ -16,13 +16,11 @@ namespace GameAPI.Infrastructure.Repositories
         public async Task AddPlayerAsync(Player player)
         {
             await _context.Players.AddAsync(player);
-            await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Player player)
+        public void Delete(Player player)
         {
             _context.Players.Remove(player);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<Player> GetByIdAsync(int id)
@@ -31,10 +29,10 @@ namespace GameAPI.Infrastructure.Repositories
             return player!;
         }
 
-        public async Task UpdateAsync(Player player)
+        public void UpdateExperience(Player player)
         {
             _context.Players.Update(player);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
         }
 
         public async Task<IList<Player>> GetAllByIdAsync()

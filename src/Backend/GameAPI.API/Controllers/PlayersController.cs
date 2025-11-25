@@ -3,6 +3,7 @@ using GameAPI.Application.UseCases.Players.GainExperience;
 using GameAPI.Application.UseCases.Players.Get;
 using GameAPI.Application.UseCases.Players.Register;
 using GameAPI.Application.UseCases.Players.Remove;
+using GameAPI.Communication.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameAPI.API.Controllers
@@ -28,9 +29,9 @@ namespace GameAPI.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] string username)
+        public async Task<IActionResult> Create([FromBody] RequestRegisterPlayerJson request)
         {
-            var player = await _registerPlayer.Execute(username);
+            var player = await _registerPlayer.Execute(request);
             return Created(string.Empty, player);
             //return CreatedAtAction(nameof(GetById), new { id = player.Id }, player);
         }

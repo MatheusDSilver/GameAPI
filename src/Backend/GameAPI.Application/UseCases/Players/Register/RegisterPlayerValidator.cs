@@ -1,12 +1,13 @@
-﻿using GameAPI.Exceptions.ExceptionsBase;
+﻿using GameAPI.Communication.Requests;
+using GameAPI.Exceptions.ExceptionsBase;
 
 namespace GameAPI.Application.UseCases.Players.Register
 {
     public class RegisterPlayerValidator
     {
-        public bool IsValid(string name)
+        public bool IsValid(RequestRegisterPlayerJson request)
         {
-            if (string.IsNullOrWhiteSpace(name)) return false;
+            if (string.IsNullOrWhiteSpace(request.Name)) return false;
 
             return true;
         }

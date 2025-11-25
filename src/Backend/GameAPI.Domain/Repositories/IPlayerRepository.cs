@@ -7,7 +7,7 @@ namespace GameAPI.Domain.Repositories
         Task<Player> GetByIdAsync(int id);
         Task<IList<Player>> GetAllByIdAsync();
         Task AddPlayerAsync(Player player);
-        Task UpdateAsync(Player player);
-        Task DeleteAsync(Player player);
+        void UpdateExperience(Player player);
+        void Delete(Player player);
     }
 }

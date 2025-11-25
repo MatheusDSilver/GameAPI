@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\GameAPI.Communication\GameAPI.Communication.csproj" />
     <ProjectReference Include="..\..\Shared\GameAPI.Exceptions\GameAPI.Exceptions.csproj" />
     <ProjectReference Include="..\GameAPI.Domain\GameAPI.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
 ﻿using FluentMigrator.Runner;
+using GameAPI.Domain;
 using GameAPI.Domain.Repositories;
 using GameAPI.Infrastructure.Extensions;
 using GameAPI.Infrastructure.Repositories;
@@ -16,6 +17,7 @@ namespace GameAPI.Infrastructure
             AddRepositories(services);
             AddDbContext(services, configuration);
             AddFluentMigrator(services, configuration);
+            AddUnityOfWork(services);
         }
 
         private static void AddRepositories(IServiceCollection services)
@@ -42,6 +44,11 @@ namespace GameAPI.Infrastructure
                 .WithGlobalConnectionString(ConfigurationExtension.ConnectionString(configuration))
                 .ScanIn(Assembly.Load("GameAPI.Infrastructure")).For.All();
             });
+        }
+
+        private static void AddUnityOfWork(IServiceCollection services)
+        {
+            services.AddScoped<IUnityOfWork, UnityOfWork>();
         }
     }
 }
