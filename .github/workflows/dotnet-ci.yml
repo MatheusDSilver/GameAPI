@@ -21,7 +21,7 @@ jobs:
 
     # O "**/*.sln" vai procurar o arquivo de solução na raiz ou dentro de pastas
     - name: Restaurar Dependências
-      run: dotnet restore **/*.sln
+      run: dotnet restore GameAPI.sln
 
     - name: Build (Compilar)
       run: dotnet build **/*.sln --no-restore
