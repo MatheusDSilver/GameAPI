@@ -1,0 +1,31 @@
+name: Pipeline CI .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Baixar Código
+      uses: actions/checkout@v4
+
+    - name: Configurar .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x # Se seu projeto for .NET 6 ou 7, ajuste aqui
+
+    # O "**/*.sln" vai procurar o arquivo de solução na raiz ou dentro de pastas
+    - name: Restaurar Dependências
+      run: dotnet restore **/*.sln
+
+    - name: Build (Compilar)
+      run: dotnet build **/*.sln --no-restore
+
+    # Roda os testes encontrados na solução (incluindo o Validators.Test)
+    - name: Rodar Testes
+      run: dotnet test **/*.sln --no-build --verbosity normal
