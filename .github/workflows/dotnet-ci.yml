@@ -1,4 +1,4 @@
-name: Pipeline CI .NET
+name: .NET Build and Test
 
 on:
   push:
@@ -7,25 +7,25 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Baixar Código
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-    - name: Configurar .NET
+    - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x # Se seu projeto for .NET 6 ou 7, ajuste aqui
+        dotnet-version: 8.0.x # Verifique se esta é a versão correta do seu projeto
 
-    # O "**/*.sln" vai procurar o arquivo de solução na raiz ou dentro de pastas
-    - name: Restaurar Dependências
+    # PASSO 1: Restore apontando direto para o arquivo correto
+    - name: Restore dependencies
       run: dotnet restore GameAPI.sln
 
-    - name: Build (Compilar)
-      run: dotnet build **/*.sln --no-restore
+    # PASSO 2: Build também apontando para o arquivo correto
+    - name: Build
+      run: dotnet build GameAPI.sln --no-restore
 
-    # Roda os testes encontrados na solução (incluindo o Validators.Test)
-    - name: Rodar Testes
-      run: dotnet test **/*.sln --no-build --verbosity normal
+    # PASSO 3: Test também apontando para o arquivo correto
+    - name: Test
+      run: dotnet test GameAPI.sln --no-build --verbosity normal
