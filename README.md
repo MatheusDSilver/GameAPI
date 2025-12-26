@@ -7,15 +7,13 @@
 
 - **Domain Drive Design (DDD)** 
 - **Arquitetura em camadas** 
----
-### Tecnologias utilizadas
-
 - **.NET 8**
 - **ASP.NET Core Web API**
 - **Entity Framework Core** (com MySQL)
 - **FluentMigrator**
 - **Dapper**
 - **Git/GitHub**
+- **Utilizando GitHub Actions (Pipelines)**
 ---
 ### Pré-requisitos
 - [.NET SDK 8.0+](https://dotnet.microsoft.com/download/dotnet/8.0)
