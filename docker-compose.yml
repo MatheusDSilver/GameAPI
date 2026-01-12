@@ -1,0 +1,22 @@
+services:
+  # Serviço da sua API
+  api:
+    build: .
+    ports:
+      - "5000:8080" # Você acessará em localhost:5000
+    depends_on:
+      - db
+    environment:
+      # AQUI ESTÁ O TRUQUE: O Server não é 'localhost', é 'db' (nome do serviço abaixo)
+      - ConnectionStrings__DefaultConnection=Server=db;Database=MinhaApiDb;User=root;Password=senha123;
+      - ASPNETCORE_ENVIRONMENT=Development
+    
+  # Serviço do Banco de Dados
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: senha123
+      MYSQL_DATABASE: MinhaApiDb
+    ports:
+      - "3306:3306" # Opcional: só se quiser acessar o banco pelo Workbench

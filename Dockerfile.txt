@@ -1,0 +1,26 @@
+# Estágio 1: Build (Compilação)
+# Usa uma imagem com o SDK completo para compilar
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copia os arquivos de projeto e restaura as dependências
+COPY ["GameAPI/GameAPI.csproj", "NomeDoSeuProjeto/"]
+RUN dotnet restore "GameAPI/GameAPI.csproj"
+
+# Copia todo o resto do código
+COPY . .
+
+# Compila e publica a versão final (Release)
+WORKDIR "/src/GameAPI"
+RUN dotnet publish -c Release -o /app/publish
+
+# Estágio 2: Runtime (Execução)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app/publish .
+
+# Define a porta que a API vai expor
+EXPOSE 8080
+
+# Comando para iniciar a API
+ENTRYPOINT ["dotnet", "GameAPI.dll"]
