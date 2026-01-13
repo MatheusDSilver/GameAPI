@@ -1,26 +1,23 @@
-# Estágio 1: Build (Compilação)
-# Usa uma imagem com o SDK completo para compilar
+# Estágio de Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
+WORKDIR /app
 
-# Copia os arquivos de projeto e restaura as dependências
-COPY ["GameAPI/GameAPI.csproj", "NomeDoSeuProjeto/"]
-RUN dotnet restore "D:\DotnetMeusProjetos\GameAPI\src\Backend\GameAPI.API\GameAPI.API.csproj"
-
-# Copia todo o resto do código
+# Copia TODOS os arquivos da pasta raiz (GameAPI) para dentro do Docker
 COPY . .
 
-# Compila e publica a versão final (Release)
-WORKDIR "/src/GameAPI"
-RUN dotnet publish "D:\DotnetMeusProjetos\GameAPI\src\Backend\GameAPI.API\GameAPI.API.csproj" -c Release -o /app/publish
+# Restaura as dependências apontando para o arquivo de projeto correto
+# Usamos barras normais (/) pois o Docker roda em Linux
+RUN dotnet restore "src/Backend/GameAPI.API/GameAPI.API.csproj"
 
-# Estágio 2: Runtime (Execução)
+# Compila e gera os arquivos finais na pasta /app/publish
+RUN dotnet publish "src/Backend/GameAPI.API/GameAPI.API.csproj" -c Release -o /app/publish
+
+# Estágio de Execução (Imagem Final)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/publish .
 
-# Define a porta que a API vai expor
 EXPOSE 8080
 
-# Comando para iniciar a API
-ENTRYPOINT ["dotnet", "GameAPI.dll"]
+# O nome da DLL final segue o nome do seu projeto (.csproj)
+ENTRYPOINT ["dotnet", "GameAPI.API.dll"]
