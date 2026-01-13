@@ -5,14 +5,14 @@ WORKDIR /src
 
 # Copia os arquivos de projeto e restaura as dependências
 COPY ["GameAPI/GameAPI.csproj", "NomeDoSeuProjeto/"]
-RUN dotnet restore "GameAPI/GameAPI.csproj"
+RUN dotnet restore "D:\DotnetMeusProjetos\GameAPI\src\Backend\GameAPI.API\GameAPI.API.csproj"
 
 # Copia todo o resto do código
 COPY . .
 
 # Compila e publica a versão final (Release)
 WORKDIR "/src/GameAPI"
-RUN dotnet publish -c Release -o /app/publish
+RUN dotnet publish "D:\DotnetMeusProjetos\GameAPI\src\Backend\GameAPI.API\GameAPI.API.csproj" -c Release -o /app/publish
 
 # Estágio 2: Runtime (Execução)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
