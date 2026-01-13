@@ -1,22 +1,26 @@
 services:
-  # Serviço da sua API
   api:
     build: .
     ports:
-      - "5000:8080" # Você acessará em localhost:5000
-    depends_on:
-      - db
+      - "5000:8080"
     environment:
-      # AQUI ESTÁ O TRUQUE: O Server não é 'localhost', é 'db' (nome do serviço abaixo)
-      - ConnectionStrings__DefaultConnection=Server=db;Database=MinhaApiDb;User=root;Password=senha123;
+      - ConnectionStrings__DefaultConnection=Server=db;Database=GameApiDb;User=root;Password=senha123;
       - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      db:
+        condition: service_healthy # <--- A MÁGICA: Só inicia a API se o banco estiver "Saudável"
     
-  # Serviço do Banco de Dados
   db:
     image: mysql:8.0
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: senha123
-      MYSQL_DATABASE: MinhaApiDb
+      MYSQL_DATABASE: GameApiDb
     ports:
-      - "3306:3306" # Opcional: só se quiser acessar o banco pelo Workbench
+      - "3306:3306"
+    # Este bloco ensina o Docker a testar se o banco está vivo
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
