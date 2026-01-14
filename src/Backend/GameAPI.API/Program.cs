@@ -3,6 +3,7 @@ using GameAPI.Application;
 using GameAPI.Infrastructure;
 using GameAPI.Infrastructure.Extensions;
 using GameAPI.Infrastructure.Migrations;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,29 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
+
+// --- ADICIONE ESTE BLOCO ---
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        // Pega o seu Contexto do Banco de Dados (Troque pelo nome correto da sua classe DbContext)
+        var context = services.GetRequiredService<GameAPI.Infrastructure.GameApiDbContext>();
+
+        // Esta linha faz a mágica: aplica todas as migrations pendentes e cria o banco se não existir
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocorreu um erro ao rodar as Migrations.");
+    }
+}
+// ---------------------------
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
