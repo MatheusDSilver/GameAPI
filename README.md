@@ -1,33 +1,33 @@
 # GameAPI
 
-> API interativa, que permite adicionar players e experiência aos mesmos, e também deleta-los caso deseje.
+> Este repositório contém uma API RESTful construída com ASP.NET CORE, cuja estrutura segue o padrão Clean Architecture.
 
 ---
-### Esta API foi criada com objetivo de demonstrar experiência com o assunto e boas práticas de desenvolvimento incluindo:
+## Criei esta API para praticar os princípios fundamentais na construção de APIs robustas. O projeto ainda está em andamento, evoluindo conforme aplico novos conceitos e boas práticas.
 
-- **Domain Drive Design (DDD)** 
-- **Arquitetura em camadas** 
+## O tema voltado a jogos foi escolhido para tornar o projeto mais leve e menos sério, fugindo do padrão tradicional de APIs presentes na maioria dos portfólios.
+
+### Tecnologias e conceitos utilizados
+
+- **Clean Architecture** 
+- **Domain Driven Design (DDD)**
+- **Containerização do projeto via Docker** 
 - **.NET 8**
 - **ASP.NET Core Web API**
 - **Entity Framework Core** (com MySQL)
 - **FluentMigrator**
-- **Dapper**
-- **Git/GitHub**
-- **Utilizando GitHub Actions (Pipelines)**
----
-### Pré-requisitos
-- [.NET SDK 8.0+](https://dotnet.microsoft.com/download/dotnet/8.0)
-- **MySQL 8.0+**
+- **Projeto versionado com Git e GitHub**
+- **Pipelines no GitHub Actions**
 ---
 ### EndPoints
 
 | Método | EndPoint | Descrição |
 |----------------------------------|---------------------------------|---------------------------------|
-| Get | /api/Players | Lista todos os registros |
-| Get | /api/Players/{id} | Retorna um registro específico |
-| Post | /api/Players | Cria um novo player |
-| Post | /api/Players/{id}/gain-xp | Adiciona experiência ao player selecionado |
-| Delete | /api/Players{id}/remove | Remove o player selecionado |
+| GET | /api/Players | Lista todos os registros |
+| GET | /api/Players/{id} | Retorna um registro específico |
+| POST | /api/Players | Cria um novo player |
+| POST | /api/Players/{id}/gain-xp | Adiciona experiência ao player selecionado |
+| DELETE | /api/Players/{id} | Remove o player selecionado |
 
 
 

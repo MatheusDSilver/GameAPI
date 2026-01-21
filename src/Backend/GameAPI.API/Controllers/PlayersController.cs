@@ -64,7 +64,7 @@ namespace GameAPI.API.Controllers
             return Ok(player);
         }
 
-        [HttpDelete("{id}/remove")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
             var player = await _remove.Execute(id);
